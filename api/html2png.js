@@ -1,36 +1,41 @@
-import { chromium } from '@playwright/test';
+import chromium from '@sparticuz/chromium';
+import puppeteer from 'puppeteer-core';
 
-export const config = { runtime: 'edge' }; // Vercel Edge/Playwright soportado
-
-export default async (req) => {
+// ❗ NO runtime edge aquí. Esto corre como Serverless Function Node.
+export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Use POST' }), { status: 405 });
+      res.status(405).json({ error: 'Use POST' });
+      return;
     }
-    const { html, width = 1080, height = 1080, scale = 2 } = await req.json();
 
+    const { html, width = 1080, height = 1080, scale = 2 } = req.body || {};
     if (!html) {
-      return new Response(JSON.stringify({ error: 'Falta "html"' }), { status: 400 });
+      res.status(400).json({ error: 'Falta \"html\"' });
+      return;
     }
 
-    const browser = await chromium.launch();
-    const context = await browser.newContext({
-      deviceScaleFactor: Number(scale) || 1,
-      viewport: { width: Number(width), height: Number(height) }
+    const executablePath = await chromium.executablePath();
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath,
+      headless: chromium.headless,
+      defaultViewport: {
+        width: Number(width),
+        height: Number(height),
+        deviceScaleFactor: Number(scale) || 1
+      }
     });
-    const page = await context.newPage();
 
-    // Carga HTML directamente en memoria
-    await page.setContent(html, { waitUntil: 'networkidle' });
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: 'networkidle0' });
 
     const buffer = await page.screenshot({ type: 'png' });
     await browser.close();
 
-    return new Response(buffer, {
-      status: 200,
-      headers: { 'Content-Type': 'image/png' }
-    });
+    res.setHeader('Content-Type', 'image/png');
+    res.status(200).send(buffer);
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    res.status(500).json({ error: e.message });
   }
-};
+}
