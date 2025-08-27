@@ -1,11 +1,12 @@
 {
-"functions": {
-"api/html2png.js": {
-"memory": 1024,
-"maxDuration": 60
-}
-},
-"routes": [
-{ "src": "/", "dest": "/api/html2png" }
-]
+  "functions": {
+    "api/html2png.js": {
+      "runtime": "nodejs20.x",
+      "memory": 1536,
+      "maxDuration": 60
+    },
+    "api/health.js": {
+      "runtime": "nodejs20.x"
+    }
+  }
 }
