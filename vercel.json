@@ -1,13 +1,11 @@
 {
-  "functions": {
-    "api/**.js": {
-      "runtime": "nodejs20.x",
-      "memory": 2048,
-      "maxDuration": 30,
-      "includeFiles": [
-        "node_modules/@sparticuz/chromium/**"
-      ]
-    }
-  },
-  "routes": [{ "src": "/api/(.*)", "dest": "/api/$1.js" }]
+"functions": {
+"api/html2png.js": {
+"memory": 1024,
+"maxDuration": 60
+}
+},
+"routes": [
+{ "src": "/", "dest": "/api/html2png" }
+]
 }
