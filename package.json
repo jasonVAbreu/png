@@ -1,10 +1,11 @@
 {
-"name": "html2png-endpoint",
-"version": "1.0.0",
-"type": "module",
-"private": true,
-"dependencies": {
-"@sparticuz/chromium": "^131.0.0",
-"puppeteer-core": "^23.7.0"
-}
+  "name": "html2png-endpoint",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@sparticuz/chromium": "^131.0.0",
+    "puppeteer-core": "^23.7.0"
+  }
 }
