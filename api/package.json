@@ -2,6 +2,8 @@
   "name": "html2img-api",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "vercel dev", "build": "vercel build" },
-  "dependencies": { "@playwright/test": "1.46.1" }
+  "dependencies": {
+    "@sparticuz/chromium": "123.0.1",
+    "puppeteer-core": "23.3.0"
+  }
 }
