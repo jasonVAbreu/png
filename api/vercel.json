@@ -2,8 +2,8 @@
   "functions": {
     "api/**.js": {
       "runtime": "nodejs20.x",
-      "memory": 1536,
-      "maxDuration": 15
+      "memory": 2048,
+      "maxDuration": 30
     }
   },
   "routes": [{ "src": "/api/(.*)", "dest": "/api/$1.js" }]
